@@ -2,6 +2,7 @@
 #define Buttons_h
 
 #include "rotary.h"
+#include "pins.h"
 
 #include <stdint.h>
 #define LONGPRESS_MS      400
@@ -14,9 +15,12 @@ enum  ButtonAlias { B_HEATER_LEFT,  B_HEATER_RIGHT, B_FRAME,  B_COOLING,
                     B_VACUUM,       B_BLOW,         B_CHARGE,   B_MENU,
                     B_MODE, B_START,        B_STOP};
 
+enum  ReadModes {CAPTURE, COMPARE};
+
 class Button_class{  
 public:
   typedef struct {
+    bool     RawState;
     bool     State;
     bool     OldState;
     bool     Unlocked;
@@ -33,16 +37,19 @@ public:
   enum  ButtonStateAlias {RELEASED, PRESSED};
   enum EncModes {SCROLL, TUNE};
   
-  int EncBtnPin;
+  int EncBtnPin = ENCB_PIN;
   bool EncBtnState;
   bool EncBtnOldState;
   bool Matrix_Scan_Allowed;
   bool EncMode;
   bool EncModeBlinker;
   uint64_t EncModeBlinkerTime;
-
-  int ColPins[COLUMNS];
-  int RowPins[ROWS];
+  uint64_t ModeSwitchTime;
+  bool  ReadMode = 0;
+  uint32_t NextCapTime = 0;
+  
+  const int ColPins[COLUMNS] = {COL0_PIN, COL1_PIN, COL2_PIN, COL3_PIN};
+  const int RowPins[ROWS] = {ROW0_PIN, ROW1_PIN, ROW2_PIN, ROW3_PIN};
    
   void Init(void);
   void Scan(void);

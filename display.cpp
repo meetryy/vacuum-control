@@ -7,14 +7,14 @@
 #include "pwm.h"
 #include "stepper.h"
 #include "pneumatic.h"
+#include "pins.h"
 
 #include <string.h>
 #include <stdbool.h>
 
 #include <LiquidCrystal.h>
-const int rs = 33, en = 27, d4 = 25, d5 = 23, d6 = 31, d7 = 29;
-LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
-
+LiquidCrystal lcd(PIN_LCD_RS, PIN_LCD_EN, PIN_LCD_D4, PIN_LCD_D5, PIN_LCD_D6, PIN_LCD_D7);
+//const int rs = 33, en = 27, d4 = 25, d5 = 23, d6 = 31, d7 = 29;
 Display_class Display;
 
 void Display_class::Init(void){
@@ -143,11 +143,11 @@ void Display_class::Refresh(void){
 
       //if (HeatFanUpdated){
         lcd.setCursor(0, 1);
-        if (PWM.HeatingOn) lcd.write("Heater: ON");
+        if (PWMc.HeatingOn) lcd.write("Heater: ON");
         else lcd.write("Heater:OFF");
         
         lcd.setCursor(13, 1);
-        if (PWM.FanOn) lcd.write("Fan: ON");
+        if (PWMc.FanOn) lcd.write("Fan: ON");
         else lcd.write("Fan:OFF");
         //HeatFanUpdated =0;
       //}
@@ -252,13 +252,13 @@ void Display_class::Scroll(int result){
         int8_t NewMarker = Menu.Marker + 1;
         //while (Menu.Items[NewMarker].Extended) NewMarker++;
         if (NewMarker < M_NR) {Menu.Marker = NewMarker;}
-        else {Menu.Marker = 0; PWM.Beep(0);}
+        else {Menu.Marker = 0; PWMc.Beep(0);}
       }   
       if (result == DIR_CCW){
         int8_t NewMarker = Menu.Marker - 1;
         //while (Menu.Items[NewMarker].Extended) NewMarker--;
         if (NewMarker > -1) {Menu.Marker = NewMarker;}
-        else {Menu.Marker = M_NR-1; PWM.Beep(0);}
+        else {Menu.Marker = M_NR-1; PWMc.Beep(0);}
       }    
       Display.Page = Menu.Marker / Display.ItemsPerPage;
       //Display.PendUpd = 1; 
@@ -269,13 +269,13 @@ void Display_class::Scroll(int result){
         int8_t NewMarker = Menu.ExtMarker + 1;
         //while (Menu.Items[NewMarker].Extended) NewMarker++;
         if (NewMarker < EXT_NR) {Menu.ExtMarker = NewMarker;}
-        else {Menu.ExtMarker = 0; PWM.Beep(0);}
+        else {Menu.ExtMarker = 0; PWMc.Beep(0);}
         }   
         if (result == DIR_CCW){
           int8_t NewMarker = Menu.ExtMarker - 1;
           //while (Menu.Items[NewMarker].Extended) NewMarker--;
           if (NewMarker > -1) {Menu.ExtMarker = NewMarker;}
-          else {Menu.ExtMarker = EXT_NR-1; PWM.Beep(0);}
+          else {Menu.ExtMarker = EXT_NR-1; PWMc.Beep(0);}
         }    
       Display.Page = Menu.ExtMarker / Display.ItemsPerPage;     
       }
@@ -288,13 +288,13 @@ void Display_class::Tune(int result){
           if (result == DIR_CW){
             if (Menu.Items[Menu.Marker].Value < Menu.Items[Menu.Marker].Max)
               Menu.Items[Menu.Marker].Value += Menu.Items[Menu.Marker].Increment;
-            else {Menu.Items[Menu.Marker].Value = Menu.Items[Menu.Marker].Min; PWM.Beep(0);}    
+            else {Menu.Items[Menu.Marker].Value = Menu.Items[Menu.Marker].Min; PWMc.Beep(0);}    
           }
         
         if (result == DIR_CCW){
           if (Menu.Items[Menu.Marker].Value > Menu.Items[Menu.Marker].Min)
             Menu.Items[Menu.Marker].Value -= Menu.Items[Menu.Marker].Increment;
-          else {Menu.Items[Menu.Marker].Value = Menu.Items[Menu.Marker].Max; PWM.Beep(0);}
+          else {Menu.Items[Menu.Marker].Value = Menu.Items[Menu.Marker].Max; PWMc.Beep(0);}
         }
         Display.PendUpd = 1; 
         }
@@ -305,13 +305,13 @@ void Display_class::Tune(int result){
         if (result == DIR_CW){
           if (  Menu.Ext[Menu.ExtMarker].Value < Menu.Ext[Menu.ExtMarker].Max)
                 Menu.Ext[Menu.ExtMarker].Value +=Menu.Ext[Menu.ExtMarker].Increment;
-          else {Menu.Ext[Menu.ExtMarker].Value = Menu.Ext[Menu.ExtMarker].Min; PWM.Beep(0);}    
+          else {Menu.Ext[Menu.ExtMarker].Value = Menu.Ext[Menu.ExtMarker].Min; PWMc.Beep(0);}    
         }
         
         if (result == DIR_CCW){
           if (  Menu.Ext[Menu.ExtMarker].Value > Menu.Ext[Menu.ExtMarker].Min)
                 Menu.Ext[Menu.ExtMarker].Value -=Menu.Ext[Menu.ExtMarker].Increment;
-          else {Menu.Ext[Menu.ExtMarker].Value = Menu.Ext[Menu.ExtMarker].Max; PWM.Beep(0);}
+          else {Menu.Ext[Menu.ExtMarker].Value = Menu.Ext[Menu.ExtMarker].Max; PWMc.Beep(0);}
         }
         Display.PendUpd = 1; 
       }

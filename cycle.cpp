@@ -68,7 +68,7 @@ void Cycle_class::Run(void){
         break;}
         
       case C_HEATING: {
-        PWM.HeatingOn = 1;
+        PWMc.HeatingOn = 1;
         if (!AutoChg) Display.SetState(ACT_HEATING_ON);
         
         if (Menu.Items[M_ACCUM_ON].Value > 0.0){
@@ -80,7 +80,7 @@ void Cycle_class::Run(void){
         }
         
         if (CheckTime(StartTime[C_HEATING], (uint64_t(Menu.Items[M_HEATER_TIME].Value * 1000.0)))){
-          if (Menu.Items[M_HEATER_PERM].Value < 1.0) PWM.HeatingOn = 0;
+          if (Menu.Items[M_HEATER_PERM].Value < 1.0) PWMc.HeatingOn = 0;
           if (Menu.Items[M_ACCUM_ON].Value > 0.0)  {Pneumo.BlowOff(); AutoChg = 0;}
           Stage = C_HEATER_HOME;
         }
@@ -94,7 +94,7 @@ void Cycle_class::Run(void){
         Motor.GoTo(MOTOR_HEATER, HOME);/* blocking move heater to work*/ 
         if (Motor.Done(MOTOR_HEATER) == 0) {
           Motor.Stop(MOTOR_HEATER); 
-          if(Menu.Items[M_HEATER_PERM].Value<1.0){PWM.HeatingOn = 1;} 
+          if(Menu.Items[M_HEATER_PERM].Value<1.0){PWMc.HeatingOn = 1;} 
           StartTime[C_BLOW] = millis(); 
           Stage = C_BLOW;}  
         break;}
@@ -151,11 +151,11 @@ void Cycle_class::Run(void){
           if (!VacEnd) {Pneumo.VacuumTable();}
           if (CheckTime(StartTime[C_VACUUM], (uint64_t(Menu.Items[M_VACUUM_TIME].Value * 1000.0)))) {Pneumo.BlowOff(); VacEnd = 1; }
           //cooling
-          PWM.FanOn = (!CoolEnd && (millis()>=StartTime[C_COOLING]));
-          if (CheckTime(StartTime[C_COOLING], (uint64_t(Menu.Items[M_COOL_TIME].Value * 1000.0)))) {CoolEnd = 1; PWM.FanOn = 0;}
+          PWMc.FanOn = (!CoolEnd && (millis()>=StartTime[C_COOLING]));
+          if (CheckTime(StartTime[C_COOLING], (uint64_t(Menu.Items[M_COOL_TIME].Value * 1000.0)))) {CoolEnd = 1; PWMc.FanOn = 0;}
           
           if (!CoolEnd&&!VacEnd) Display.SetState(ACT_VAC_COOL);
-          if (!PWM.FanOn&&!VacEnd) Display.SetState(ACT_VACUUM);
+          if (!PWMc.FanOn&&!VacEnd) Display.SetState(ACT_VACUUM);
           if (VacEnd&&!CoolEnd) Display.SetState(ACT_COOL_ON);
           if (CoolEnd && VacEnd){
             CoolEnd = 0; 
@@ -178,10 +178,10 @@ void Cycle_class::Run(void){
         
       case C_COOLING: {
         //Serial.println("C_COOLING ");
-        PWM.FanOn = 1;
+        PWMc.FanOn = 1;
         Display.SetState(ACT_COOL_ON);
         if (CheckTime(StartTime[C_COOLING], (uint64_t(Menu.Items[M_COOL_TIME].Value * 1000.0)))){
-          PWM.FanOn = 0;
+          PWMc.FanOn = 0;
           Display.SetState(ACT_COOL_OFF);
           StartTime[C_TABLE_DOWN] = millis(); 
           Stage = C_TABLE_DOWN;
@@ -312,8 +312,8 @@ void Cycle_class::GetReady(void){
   //Pneumo.Set(DIST_FRAME, UP);
   Pneumo.BlowOff();
   
-  PWM.FanOn = 0;
-  //PWM.HeatingOn = 1;
+  PWMc.FanOn = 0;
+  //PWMc.HeatingOn = 1;
 
   //delay(500);
   // here move heater to home

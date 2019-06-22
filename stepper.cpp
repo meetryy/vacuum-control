@@ -6,8 +6,8 @@
 
 Motor_class Motor;
 
-AccelStepper puller(1, A7, A6);
-AccelStepper heater(1, A5, A4);
+AccelStepper puller(1, Motor.StepPins[MOTOR_PULLER], Motor.StepPins[MOTOR_PULLER]);
+AccelStepper heater(1, Motor.StepPins[MOTOR_HEATER], Motor.DirPins[MOTOR_HEATER]);
 
 void Motor_class::Init(void){
   //puller.setMaxSpeed(Menu.Ext[EXT_PULLER_SPEED].Value*(int)Menu.Ext[EXT_PULLER_STEP].Value);

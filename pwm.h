@@ -25,6 +25,6 @@ class PWM_class{
   void Beep(bool length);
   };
   
-extern PWM_class PWM;
+extern PWM_class PWMc;
 
 #endif

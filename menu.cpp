@@ -10,6 +10,7 @@ Menu_class Menu;
 
 void allocStr (char **pStr, char* name) {
     free (*pStr);
+    //void* pStr;
     *pStr = malloc(((unsigned)strlen(name) + 1));
     strcpy(*pStr, name);
 }
@@ -306,7 +307,9 @@ i = EXT_PULLER_STEP;
   i = EXT_PULLER_ACCEL;
   allocStr(&Ext[i].Name,"Puller accel");
   Ext[i].IsBool = 0;  Ext[i].Increment = 1.0;  Ext[i].Max = 3000.0;
-  Ext[i].Min = 1.0;  Ext[i].Unit = "\0";  Ext[i].Changeable = 1;  Ext[i].Extended = 1;
+  Ext[i].Min = 1.0;  
+  Ext[i].Unit = "\0"; 
+  Ext[i].Changeable = 1;  Ext[i].Extended = 1;
  i = EXT_INV_BLOW; 
   allocStr(&Ext[i].Name,"Inv blow dist");
   Ext[i].IsBool = 1;  Ext[i].Increment =1.0;  Ext[i].Max = 1.0;  Ext[i].Min = 0.0;  Ext[i].Changeable = 1;

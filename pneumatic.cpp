@@ -4,14 +4,7 @@
 
 Pneumo_class Pneumo;
 
-void Pneumo_class::Init(void){
-  PneumoPins[DIST_MAIN] = A15;  
-  PneumoPins[DIST_TABLE] = A14;  
-  PneumoPins[DIST_FRAME] = A13;
-  PneumoPins[DIST_BLOW] = A12; 
-  PneumoPins[VALVE_BLOW] = A11;
-  PneumoPins[VALVE_VACUUM] = A10;  
-  PneumoPins[VALVE_ACC] = A9;  
+void Pneumo_class::Init(void){ 
   for (int i=0; i<DIST_NR; i++) pinMode(PneumoPins[i], OUTPUT); 
   
   Pneumo.Set(DIST_TABLE, DOWN);

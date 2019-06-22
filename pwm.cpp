@@ -1,6 +1,7 @@
 #include "pwm.h"
 #include "arduino.h"
 #include "menu.h"
+#include "pins.h"
 
 #include <Adafruit_NeoPixel.h>
 #define PIN 13
@@ -11,7 +12,7 @@ Adafruit_NeoPixel pixels = Adafruit_NeoPixel(count_led, PIN, NEO_GRB + NEO_KHZ80
 
 #define PERIOD_MS 5000
 
-PWM_class PWM;
+PWM_class PWMc;
 
 void PWM_class::Init(void){
 
@@ -29,7 +30,7 @@ void PWM_class::Init(void){
   HeaterPins[6] = 9;  HeaterPins[7] = 10;  HeaterPins[8] = 11;
   
   //FanPin = 45;
-  BeepPin = A0;
+  BeepPin = BEEP_PIN;
   
   for (int i=0; i<9; i++){
     pinMode(HeaterPins[i], OUTPUT);

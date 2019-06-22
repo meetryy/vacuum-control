@@ -9,7 +9,7 @@
 #include <stdio.h>  
 
 Memory_class Memory;
-              
+
 void Memory_class::Init(void){
   EEPstate = EEP_READY;
   OldStateTime = millis();
@@ -67,14 +67,14 @@ void Memory_class::Save(void){
     Count = 1;
     OldStateTime = millis();
     EEPstate = EEP_FAIL;
-    PWM.Beep(1);
+    PWMc.Beep(1);
     //sprintf(Menu.Items[M_EEP_SAVE].Name, "Saving fail!");
   }
   else {
     Count = 1; 
     OldStateTime = millis();
     EEPstate = EEP_OK; 
-    PWM.Beep(0);
+    PWMc.Beep(0);
 
     //sprintf(Menu.Items[M_EEP_SAVE].Name, "Saving OK");
     //Serial.println("EEP save ok");
@@ -108,7 +108,7 @@ void Memory_class::Load(void){
     Count = 1;
     OldStateTime = millis();
     EEPstate = EEP_FAIL;
-    PWM.Beep(1);
+    PWMc.Beep(1);
     //Serial.println("check failed!!!");
   }
   
@@ -122,8 +122,9 @@ void Memory_class::Load(void){
       //Serial.println("reading extmenu @ " + String(i) + " = " + String(Menu.Ext[i].Value));
     }
     
-    PWM.Beep(0);
+    PWMc.Beep(0);
     EEPstate = EEP_OK;
   }
 }
+
  

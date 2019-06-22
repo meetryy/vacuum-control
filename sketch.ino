@@ -18,12 +18,12 @@ void setup() {
   
   Memory.Init();
   Memory.Load();
-  PWM.Init();
+  PWMc.Init();
   Cycle.Init();
   Pneumo.Init();
   Motor.Init();
   
-  PWM.Beep(0);
+  PWMc.Beep(0);
   Cycle.SwitchToManual();
   
   Pneumo.Power(OPEN);
@@ -34,7 +34,7 @@ void loop() {
   Buttons.Proc();
   Display.Refresh();
   Buttons.ProcEncoder();
-  PWM.Spin();
+  PWMc.Spin();
   Cycle.Run();
   Memory.Worker();
   Motor.Run();

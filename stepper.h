@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include "arduino.h"
-
+#include "pins.h"
 enum MotorEnum{MOTOR_HEATER, MOTOR_PULLER, MOTOR_NR};
 enum StepperState {RUNNING, DONE};
 enum StepperSpinType {CONT, NOT_CONT, STOP};
@@ -14,8 +14,8 @@ public:
   void Init(void);
   //void Print(char* in);
   //void Println(char* in); 
-  int StepPins[MOTOR_NR] = {A7, A5};
-  int DirPins[MOTOR_NR]  = {A6, A4};
+  int StepPins[MOTOR_NR] = {HEATER_STEP_PIN, PULLER_STEP_PIN};
+  int DirPins[MOTOR_NR]  = {HEATER_DIR_PIN, PULLER_DIR_PIN};
   uint8_t SpinType[MOTOR_NR] = {STOP, STOP};
   int32_t LastPos[MOTOR_NR] = {0,0};
   int32_t DesiredPos[MOTOR_NR] = {0,0};
